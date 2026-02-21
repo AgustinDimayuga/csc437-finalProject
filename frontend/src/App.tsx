@@ -1,7 +1,7 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
-import { SHARED_TEST } from "./shared/example.js";
+import { SHARED_TEST } from "./shared/example";
 import "./App.css";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
           count is {count}
         </button>
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+          Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
       <p className="read-the-docs">
@@ -34,4 +34,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
