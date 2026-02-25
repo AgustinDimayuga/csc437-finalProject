@@ -1,2 +1,9 @@
 @config "../tailwind.config.ts";
 @import "tailwindcss";
+@tailwind utilities;
+
+@layer components {
+  .container-content {
+    @apply mx-auto max-w-content;
+  }
+}

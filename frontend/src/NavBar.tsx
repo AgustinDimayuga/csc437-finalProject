@@ -1,41 +1,63 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 interface NavLinks {
   label: string;
   href: string;
 }
 const NAVLINKS: NavLinks[] = [
-  { label: "Home", href: "#x" },
   { label: "Settings", href: "#x" },
   { label: "Create Listing", href: "#x" },
-  { label: "Properties", href: "#x" },
+  { label: "Contact Us", href: "#x" },
 ];
-interface NavLinksProps {
-  navLinks: NavLinks[]; // array of links
-}
 
-function NavLinks({ navLinks }: NavLinksProps) {
+function NavLinks() {
   return (
-    <ul className="flex gap-4">
-      {navLinks.map((link) => (
+    <>
+      {NAVLINKS.map((link) => (
         <li key={link.href}>
           <a href={link.href}>{link.label}</a>
         </li>
       ))}
-    </ul>
+    </>
   );
 }
-
 export function NavBar() {
+  const [isActive, setActive] = useState<Boolean>(false);
+
   return (
     <>
       <nav>
-        <div className="flex items-baseline justify-between p-2">
-          <div className="text-fluid">PolyHousing</div>
-          <div>
-            <NavLinks navLinks={NAVLINKS} />
+        <div className="bg-gray-400/50 flex items-center justify-between py-2 px-4 fixed w-screen ">
+          <div className="text-fluid">
+            <a href={"#x"}>PolyHousing</a>
           </div>
-          <FontAwesomeIcon className="fa-2x" icon={faMoon} />
+
+          <div className="flex gap-2">
+            <ul className="hidden md:flex gap-3 items-center ">
+              <NavLinks />
+            </ul>
+
+            <div className="relative md:hidden">
+              <button
+                onClick={() => setActive(!isActive)}
+                className="border-2 pl-2 pr-2 pt-1 pb-1 rounded-lg"
+              >
+                <FontAwesomeIcon className="fa-1x" icon={faBars} />
+              </button>
+              {isActive && (
+                <div className="border absolute right-0 mt-2 ">
+                  <ul className="min-w-max p-4 flex flex-col items-center ">
+                    <NavLinks />
+                  </ul>
+                </div>
+              )}
+            </div>
+            <button>
+              <FontAwesomeIcon className="fa-2x" icon={faMoon} />
+            </button>
+          </div>
         </div>
       </nav>
     </>
