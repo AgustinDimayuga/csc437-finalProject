@@ -1,14 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRef } from "react";
 interface NavLinks {
   label: string;
   href: string;
 }
 const NAVLINKS: NavLinks[] = [
   { label: "Settings", href: "#x" },
-  { label: "Create Listing", href: "#x" },
+  { label: "List a Home", href: "#x" },
   { label: "Contact Us", href: "#x" },
 ];
 
@@ -25,7 +26,20 @@ function NavLinks() {
 }
 export function NavBar() {
   const [isActive, setActive] = useState<Boolean>(false);
-
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        console.log("hi");
+        setActive(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   return (
     <>
       <nav>
@@ -47,7 +61,7 @@ export function NavBar() {
                 <FontAwesomeIcon className="fa-1x" icon={faBars} />
               </button>
               {isActive && (
-                <div className="border absolute right-0 mt-2 ">
+                <div ref={wrapperRef} className="border absolute right-0 mt-2 ">
                   <ul className="min-w-max p-4 flex flex-col items-center ">
                     <NavLinks />
                   </ul>

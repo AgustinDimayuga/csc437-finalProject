@@ -11,15 +11,23 @@ interface heroProps {
 
 export function Hero({ heading, subHeading }: heroProps) {
   const [searchText, setText] = useState("");
+  const [showColleges, setColleges] = useState(false);
   return (
     <>
       {/* Fix hard coded values like mt 25vh gap-10 later*/}
-      <div className="flex flex-col items-center flex-1 min-h-screen pt-[30vh] gap-10">
+      <div className="flex flex-col items-center flex-1 min-h-screen justify-center p-4 gap-10">
         <div className="flex flex-col items-center">
           <span className="text-fluidH1 font-bold">{heading}</span>
           <h1 className="text-fluidH2 text-gray-600">{subHeading}</h1>
         </div>
-        <SearchInput searchText={searchText} onSearchTextChange={setText} />
+        {/* Implement Search Input Later
+        <SearchInput
+          searchText={searchText}
+          onSearchTextChange={setText}
+          showColleges={showColleges}
+          setColleges={setColleges}
+        />
+      */}
       </div>
     </>
   );

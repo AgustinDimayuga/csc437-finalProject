@@ -6,6 +6,7 @@ import { faCow } from "@fortawesome/free-solid-svg-icons";
 import { Hero } from "./Hero";
 import { TrendingListings } from "./TrendingListings";
 import { InformationLinks } from "./InformationLinks";
+import { Footer } from "./Footer";
 
 export function Home() {
   return (
@@ -17,6 +18,7 @@ export function Home() {
         />
         <InformationLinks />
         <TrendingListings />
+        <Footer />
       </div>
     </>
   );

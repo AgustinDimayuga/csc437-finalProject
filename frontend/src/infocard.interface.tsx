@@ -4,4 +4,5 @@ export interface infoCard {
   heading: string;
   infoText: string;
   icon: IconDefinition;
+  buttonText: string;
 }
