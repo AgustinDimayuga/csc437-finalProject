@@ -3,27 +3,9 @@ import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { useRef } from "react";
-interface NavLinks {
-  label: string;
-  href: string;
-}
-const NAVLINKS: NavLinks[] = [
-  { label: "Settings", href: "#x" },
-  { label: "List a Home", href: "#x" },
-  { label: "Contact Us", href: "#x" },
-];
+import { Link } from "react-router";
+import { NavLinks } from "./NavLinks";
 
-function NavLinks() {
-  return (
-    <>
-      {NAVLINKS.map((link) => (
-        <li key={link.href}>
-          <a href={link.href}>{link.label}</a>
-        </li>
-      ))}
-    </>
-  );
-}
 export function NavBar() {
   const [isActive, setActive] = useState<Boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -42,10 +24,10 @@ export function NavBar() {
   }, []);
   return (
     <>
-      <nav>
-        <div className="bg-gray-400/50 flex items-center justify-between py-2 px-4 fixed w-screen ">
+      <nav className="fixed top-0 left-0 w-full h-16 z-50">
+        <div className="bg-gray-400/50 flex items-center justify-between p-2 fixed w-screen ">
           <div className="text-fluid">
-            <a href={"#x"}>PolyHousing</a>
+            <Link to={"/"}>PolyHousing</Link>
           </div>
 
           <div className="flex gap-2">

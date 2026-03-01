@@ -1,3 +1,4 @@
+import { NavLinks, NAVLINKS } from "./NavLinks";
 export function Footer() {
   const navLinks = [
     "Home",
@@ -22,11 +23,7 @@ export function Footer() {
           <div className="space-y-3">
             <h4 className="text-base font-semibold">Navigation</h4>
             <ul className="space-y-2 text-sm">
-              {navLinks.map((link) => (
-                <li key={link}>
-                  <a href="#x">{link}</a>
-                </li>
-              ))}
+              <NavLinks />
             </ul>
           </div>
 
@@ -34,13 +31,13 @@ export function Footer() {
             <h4 className="text-base font-semibold">Contact</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#x">support@offcampushub.com</a>
+                <span>support@offcampushub.com</span>
               </li>
               <li>
-                <a href="#x">Mon-Fri, 9am-5pm</a>
+                <span>Mon-Fri, 9am-5pm</span>
               </li>
               <li>
-                <a href="#x">United States</a>
+                <span>United States</span>
               </li>
             </ul>
           </div>

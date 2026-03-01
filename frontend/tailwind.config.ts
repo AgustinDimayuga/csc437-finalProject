@@ -12,6 +12,9 @@ export default {
       maxWidth: {
         content: "80rem",
       },
+      spacing: {
+        belowSidebar: "6rem",
+      },
     },
   },
   plugins: [],

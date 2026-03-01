@@ -1,6 +1,7 @@
 import { faCow } from "@fortawesome/free-solid-svg-icons";
 import { infoCard } from "./infocard.interface";
 import { ReactNode } from "react";
+import { Link } from "react-router";
 
 interface MoreInformationProps {
   children?: ReactNode;

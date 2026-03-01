@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faCow } from "@fortawesome/free-solid-svg-icons";
 import { SearchInput } from "./SearchInput";
+import { Link } from "react-router";
 interface heroProps {
   heading: string;
   subHeading: string;
@@ -28,6 +29,11 @@ export function Hero({ heading, subHeading }: heroProps) {
           setColleges={setColleges}
         />
       */}
+        <Link to="/HomeListings">
+          <button className="bg-amber-700 border rounded-2xl p-2">
+            Go home
+          </button>
+        </Link>
       </div>
     </>
   );

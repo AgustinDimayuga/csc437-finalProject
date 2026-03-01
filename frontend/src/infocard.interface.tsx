@@ -5,4 +5,5 @@ export interface infoCard {
   infoText: string;
   icon: IconDefinition;
   buttonText: string;
+  to: string;
 }
