@@ -30,8 +30,8 @@ export function Hero({ heading, subHeading }: heroProps) {
         />
       */}
         <Link to="/HomeListings">
-          <button className="bg-amber-700 border rounded-2xl p-2">
-            Go home
+          <button className="w-64 rounded-lg bg-slate-900 px-4 py-3 text-lg font-medium text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 sm:w-72">
+            Search Homes
           </button>
         </Link>
       </div>

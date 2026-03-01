@@ -5,8 +5,9 @@ export interface NavLinks {
   to: string;
 }
 export const NAVLINKS: NavLinks[] = [
-  { label: "Settings", to: "/settings" },
+  { label: "Browse Homes", to: "/HomeListings" },
   { label: "List a Home", to: "#x" },
+  { label: "Settings", to: "/settings" },
   { label: "Contact Us", to: "/contact" },
 ];
 export function NavLinks() {

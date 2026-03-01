@@ -3,7 +3,7 @@ import houseImg from "./assets/house.jpg";
 export function HousingCards() {
   return (
     <a href="listing.html">
-      <article className="border rounded-4xl overflow-hidden">
+      <article className="rounded-4xl overflow-hidden">
         {/* Image fills top half */}
         <div className="w-full h-56 overflow-hidden">
           <img

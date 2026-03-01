@@ -39,7 +39,10 @@ export function AccountSettings({ data, formAction }: AccountSettingsProps) {
           Account Settings
         </legend>
 
-        <label htmlFor="username" className="text-sm font-medium text-slate-700">
+        <label
+          htmlFor="username"
+          className="text-sm font-medium text-slate-700"
+        >
           Username
         </label>
         <input
@@ -73,7 +76,10 @@ export function AccountSettings({ data, formAction }: AccountSettingsProps) {
           <span className="text-sm text-red-600">{data.errors.email}</span>
         )}
 
-        <label htmlFor="password" className="text-sm font-medium text-slate-700">
+        <label
+          htmlFor="password"
+          className="text-sm font-medium text-slate-700"
+        >
           Password
         </label>
         <input

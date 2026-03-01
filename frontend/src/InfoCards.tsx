@@ -12,19 +12,19 @@ export function InfoCards({
 }: infoCard) {
   return (
     <Link to={to}>
-      <div className="flex flex-col p-8 gap-6 justify-between border border-black rounded-2xl text-center bg-taupe-300 h-full">
+      <div className="flex h-full flex-col justify-between gap-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         {/* Icon always at the top, fixed height so all cards align */}
-        <div className="flex items-center justify-center h-24">
-          <FontAwesomeIcon className="fa-5x" icon={icon} />
+        <div className="flex h-20 items-center justify-center text-slate-700">
+          <FontAwesomeIcon className="fa-3x" icon={icon} />
         </div>
 
         {/* Text fills available space to align headers and paragraphs */}
         <div className="flex flex-col flex-1 justify-between gap-6">
-          <div>
-            <h1 className="text-4xl mb-8 font-bold tracking-tight leading-tight">
+          <div className="text-center">
+            <h1 className="mb-4 text-3xl font-bold leading-tight text-slate-900">
               {heading}
             </h1>
-            <p className="text-base font-light leading-relaxed tracking-wide text-gray-700">
+            <p className="text-base leading-relaxed text-slate-600">
               {infoText}
             </p>
           </div>

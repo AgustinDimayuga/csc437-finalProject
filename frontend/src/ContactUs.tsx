@@ -18,7 +18,6 @@ export type ContactFormState = {
 
 const initialState: ContactFormState = {
   errors: {},
-  values: {},
 };
 
 function submitContactForm(
@@ -45,7 +44,6 @@ function submitContactForm(
   if (Object.keys(errors).length > 0) {
     return { errors };
   }
-  window.alert("hi");
   return {
     values: { subject, firstName, lastName, message },
   };
@@ -60,6 +58,18 @@ export function ContactUs() {
   return (
     <div className="container-information ">
       <ContactForm data={data} formAction={formAction} />
+
+      {data?.values && (
+        <div className="bg-green-200 p-4 rounded-xl mt-4">
+          <h1 className="text-xl font-bold">Contact Request Submitted</h1>
+          <div>
+            Thanks {data.values.firstName} your message regarding{" "}
+            {data.values.subject}
+            {data.values.subject} has been submitted
+          </div>
+          <div>An agent will reach out and response via email soon! </div>
+        </div>
+      )}
     </div>
   );
 }
