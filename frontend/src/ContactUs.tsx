@@ -14,11 +14,13 @@ export type ContactFormState = {
     lastName?: string;
     message?: string;
   };
+  success?: boolean;
 };
 
 const initialState: ContactFormState = {
   errors: {},
   values: {},
+  success: false,
 };
 
 function submitContactForm(
@@ -43,13 +45,14 @@ function submitContactForm(
     data.errors.message = "Message required";
   }
 
+  data.values.subject = subject;
+  data.values.firstName = firstName;
+  data.values.lastName = lastName;
+  data.values.message = message;
   if (Object.keys(data.errors).length > 0) {
-    data.values.subject = subject;
-    data.values.firstName = firstName;
-    data.values.lastName = lastName;
-    data.values.message = message;
     return data;
   }
+  data.success = true;
   return data;
 }
 
@@ -63,7 +66,7 @@ export function ContactUs() {
     <div className="container-information ">
       <ContactForm data={data} formAction={formAction} />
 
-      {data?.values && (
+      {data?.success && (
         <div className="bg-green-200 p-4 rounded-xl mt-4">
           <h1 className="text-xl font-bold">Contact Request Submitted</h1>
           <div>

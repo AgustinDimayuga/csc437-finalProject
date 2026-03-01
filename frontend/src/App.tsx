@@ -7,8 +7,12 @@ import { SettingsPage } from "./SettingsPage";
 import { ScrollToTop } from "./ScrollUp";
 import { ContactUs } from "./ContactUs";
 import { HomeListings } from "./HomeListings";
+import { initialListings } from "./ListingsArrays";
+import { useState } from "react";
+import { ListingInformation } from "./ListingInformation";
 
 function App() {
+  const [listings, setListings] = useState(initialListings);
   return (
     <>
       <ScrollToTop />
@@ -17,7 +21,11 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/contact" element={<ContactUs />} />
-          <Route path="/HomeListings" element={<HomeListings />} />
+          <Route
+            path="/HomeListings"
+            element={<HomeListings listings={listings} />}
+          />
+          <Route path="/listing/:id" element={<ListingInformation />} />
         </Route>
       </Routes>
     </>

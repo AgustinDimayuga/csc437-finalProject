@@ -3,16 +3,17 @@ import { WebSettings } from "./WebSettings";
 import { useActionState } from "react";
 
 type FormState = {
-  errors?: {
+  errors: {
     username?: string;
     email?: string;
     password?: string;
   };
-  values?: {
-    username: string;
-    email: string;
-    password: string;
+  values: {
+    username?: string;
+    email?: string;
+    password?: string;
   };
+  success?: boolean;
 };
 export type Data = {
   notifications: string;
@@ -32,7 +33,7 @@ const initialState: Data = {
 export function SettingsPage() {
   const [data, formAction] = useActionState<FormState, FormData>(
     submitAccountSettingsForm,
-    {},
+    { errors: {}, values: {} },
   );
   const [dataPreferences, formActionPreferences, isPending] = useActionState<
     Data,
@@ -44,7 +45,7 @@ export function SettingsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-4">
           <AccountSettings data={data} formAction={formAction} />
-          {data?.values && (
+          {data?.success && (
             <div className="bg-green-200 p-4 rounded">
               <h2 className="text-xl font-bold">Changes Submitted</h2>
               <div>Username: {data.values.username}</div>
@@ -87,27 +88,26 @@ function submitAccountSettingsForm(
   const email = (formData.get("email") as string) || "";
   const password = (formData.get("password") as string) || "";
 
-  const errors: FormState["errors"] = {};
-
+  const data: FormState = { errors: {}, values: {} };
   if (username.trim() === "") {
-    errors.username = "Username is required";
+    data.errors.username = "Username is required";
   }
 
   if (!emailRegex.test(email)) {
-    errors.email = "Please enter a valid email address";
+    data.errors.email = "Please enter a valid email address";
   }
 
   if (password.trim().length < 5) {
-    errors.password = "Please enter at least 5 characters";
+    data.errors.password = "Please enter at least 5 characters";
   }
 
-  if (Object.keys(errors).length > 0) {
-    return { errors };
+  if (Object.keys(data.errors).length > 0) {
+    data.values.username = username;
+    data.values.email = email;
+    return data;
   }
-
-  return {
-    values: { username, email, password },
-  };
+  data.success = true;
+  return data;
 }
 function submitPreferences(prevState: Data, formData: FormData): Data {
   const notifications =

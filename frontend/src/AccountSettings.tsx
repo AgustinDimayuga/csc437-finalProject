@@ -71,6 +71,7 @@ export function AccountSettings({ data, formAction }: AccountSettingsProps) {
           name="email"
           placeholder="you@example.com"
           aria-invalid={!!data?.errors?.email}
+          defaultValue={data?.values?.email}
         />
         {data?.errors?.email && (
           <span className="text-sm text-red-600">{data.errors.email}</span>

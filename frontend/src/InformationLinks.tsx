@@ -13,7 +13,7 @@ const INFOCARDINFORMATION: infoCard[] = [
       "Search for homes that are exclusively looking for college students. No need for the hassle of worring if they are accepting college students or not ",
     icon: faHouse,
     buttonText: "Browse Listings",
-    to: "/HouseListings",
+    to: "/HomeListings",
   },
   {
     heading: "List a home",
