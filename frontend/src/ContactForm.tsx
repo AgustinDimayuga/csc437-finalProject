@@ -41,6 +41,7 @@ export function ContactForm({ data, formAction }: ContactFormProps) {
           aria-invalid={!!data?.errors?.subject}
           ref={subjectRef}
           className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          defaultValue={data.values.subject}
         />
         {data?.errors?.subject && (
           <span className="text-sm text-red-600">{data.errors.subject}</span>
@@ -60,6 +61,7 @@ export function ContactForm({ data, formAction }: ContactFormProps) {
           aria-invalid={!!data.errors?.firstName}
           ref={firstNameRef}
           className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          defaultValue={data.values.firstName}
         />
 
         {data?.errors?.firstName && (
@@ -80,6 +82,7 @@ export function ContactForm({ data, formAction }: ContactFormProps) {
           aria-invalid={!!data.errors?.lastName}
           ref={lastNameRef}
           className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          defaultValue={data.values.lastName}
         />
 
         {data?.errors?.lastName && (
@@ -101,6 +104,7 @@ export function ContactForm({ data, formAction }: ContactFormProps) {
           aria-invalid={!!data.errors?.message}
           ref={messageRef}
           className="min-h-32 w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          defaultValue={data.values.message}
         ></textarea>
 
         {data?.errors?.message && (

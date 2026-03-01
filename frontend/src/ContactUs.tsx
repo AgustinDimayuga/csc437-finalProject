@@ -2,13 +2,13 @@ import { useActionState } from "react";
 import { ContactForm } from "./ContactForm";
 
 export type ContactFormState = {
-  errors?: {
+  errors: {
     subject?: string;
     firstName?: string;
     lastName?: string;
     message?: string;
   };
-  values?: {
+  values: {
     subject?: string;
     firstName?: string;
     lastName?: string;
@@ -18,35 +18,39 @@ export type ContactFormState = {
 
 const initialState: ContactFormState = {
   errors: {},
+  values: {},
 };
 
 function submitContactForm(
   prevState: ContactFormState,
   formData: FormData,
 ): ContactFormState {
-  const errors: ContactFormState["errors"] = {};
+  const data: ContactFormState = { errors: {}, values: {} };
   const subject = (formData.get("subject") as string) || "";
   const firstName = (formData.get("first-name") as string) || "";
   const lastName = (formData.get("last-name") as string) || "";
   const message = (formData.get("message") as string) || "";
   if (subject.trim() === "") {
-    errors.subject = "Subject required";
+    data.errors.subject = "Subject Required";
   }
   if (firstName.trim() === "") {
-    errors.firstName = "First name required";
+    data.errors.firstName = "First name required";
   }
   if (lastName.trim() === "") {
-    errors.lastName = "Last name required";
+    data.errors.lastName = "Last name required";
   }
   if (message.trim() === "") {
-    errors.message = "Message required";
+    data.errors.message = "Message required";
   }
-  if (Object.keys(errors).length > 0) {
-    return { errors };
+
+  if (Object.keys(data.errors).length > 0) {
+    data.values.subject = subject;
+    data.values.firstName = firstName;
+    data.values.lastName = lastName;
+    data.values.message = message;
+    return data;
   }
-  return {
-    values: { subject, firstName, lastName, message },
-  };
+  return data;
 }
 
 export function ContactUs() {
