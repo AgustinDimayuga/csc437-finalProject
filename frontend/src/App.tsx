@@ -21,7 +21,7 @@ function App() {
     <>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<MainLayout isSignedIn={isSignedIn} userName={userName} />}>
           <Route index element={<Home />} />
           <Route
             path="/settings"

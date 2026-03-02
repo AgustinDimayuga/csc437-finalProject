@@ -13,7 +13,12 @@ export const NAVLINKS: NavLinkItem[] = [
   { label: "Contact Us", to: "/contact" },
 ];
 
-export function NavLinks() {
+interface NavLinksProps {
+  isSignedIn: boolean;
+  userName: string;
+}
+
+export function NavLinks({ isSignedIn, userName }: NavLinksProps) {
   const location = useLocation();
 
   return (
@@ -23,9 +28,16 @@ export function NavLinks() {
           return null;
         }
 
+        const label =
+          link.to === "/settings"
+            ? isSignedIn
+              ? userName
+              : "Account"
+            : link.label;
+
         return (
           <li key={link.to}>
-            <Link to={link.to}>{link.label}</Link>
+            <Link to={link.to}>{label}</Link>
           </li>
         );
       })}

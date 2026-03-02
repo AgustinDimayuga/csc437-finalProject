@@ -6,7 +6,12 @@ import { useRef } from "react";
 import { Link } from "react-router";
 import { NavLinks } from "./NavLinks";
 
-export function NavBar() {
+interface NavBarProps {
+  isSignedIn: boolean;
+  userName: string;
+}
+
+export function NavBar({ isSignedIn, userName }: NavBarProps) {
   const [isActive, setActive] = useState<Boolean>(false);
   const [isDark, setIsDark] = useState<boolean>(
     () => localStorage.getItem("theme") === "dark",
@@ -41,7 +46,7 @@ export function NavBar() {
 
           <div className="flex gap-2">
             <ul className="hidden md:flex gap-3 items-center ">
-              <NavLinks />
+              <NavLinks isSignedIn={isSignedIn} userName={userName} />
             </ul>
 
             <div className="relative md:hidden">
@@ -57,7 +62,7 @@ export function NavBar() {
                   className="absolute right-0 mt-2 min-w-48 rounded-xl border border-brand-200 bg-brand-100 p-2 shadow-md"
                 >
                   <ul className="flex min-w-max flex-col gap-1 rounded-lg p-2 text-brand-700">
-                    <NavLinks />
+                    <NavLinks isSignedIn={isSignedIn} userName={userName} />
                   </ul>
                 </div>
               )}
