@@ -24,7 +24,6 @@ export interface Listing {
   // Availability
   availableFrom: string; // ISO date string
   leaseDuration: number; // in months
-  isAvailable: boolean;
 
   // Amenities
   amenities: {
@@ -48,5 +47,5 @@ export interface Listing {
   // Meta
   listedAt: string; // ISO date string
   updatedAt: string;
-  listedBy: "landlord" | "student" | "property_manager";
+  postedBy: "agent" | "student";
 }

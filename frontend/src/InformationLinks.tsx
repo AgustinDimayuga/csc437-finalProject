@@ -34,7 +34,7 @@ const INFOCARDINFORMATION: infoCard[] = [
 ];
 export function InformationLinks() {
   return (
-    <MoreInformation className="bg-slate-50 border-y border-slate-200">
+    <MoreInformation className="bg-brand-100 border-y border-brand-200">
       {INFOCARDINFORMATION.map((info) => (
         <InfoCards
           key={info.heading}

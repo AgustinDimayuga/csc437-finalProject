@@ -19,7 +19,7 @@ export function Hero({ heading, subHeading }: heroProps) {
       <div className="flex flex-col items-center flex-1 min-h-screen justify-center p-4 gap-10">
         <div className="flex flex-col items-center">
           <span className="text-fluidH1 font-bold">{heading}</span>
-          <h1 className="text-fluidH2 text-gray-600">{subHeading}</h1>
+          <h1 className="text-fluidH2 text-brand-600">{subHeading}</h1>
         </div>
         {/* Implement Search Input Later
         <SearchInput
@@ -30,7 +30,7 @@ export function Hero({ heading, subHeading }: heroProps) {
         />
       */}
         <Link to="/HomeListings">
-          <button className="w-64 rounded-lg bg-slate-900 px-4 py-3 text-lg font-medium text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 sm:w-72">
+          <button className="w-64 rounded-lg bg-brand-900 px-4 py-3 text-lg font-medium text-white transition hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 sm:w-72">
             Search Homes
           </button>
         </Link>

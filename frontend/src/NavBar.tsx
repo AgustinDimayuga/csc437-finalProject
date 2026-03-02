@@ -8,7 +8,16 @@ import { NavLinks } from "./NavLinks";
 
 export function NavBar() {
   const [isActive, setActive] = useState<Boolean>(false);
+  const [isDark, setIsDark] = useState<boolean>(
+    () => localStorage.getItem("theme") === "dark",
+  );
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.body.classList.toggle("dark", isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  }, [isDark]);
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -25,7 +34,7 @@ export function NavBar() {
   return (
     <>
       <nav className="fixed top-0 left-0 w-full h-16 z-50">
-        <div className="bg-gray-400/50 flex items-center justify-between p-2 fixed w-screen ">
+        <div className="navbar-surface flex items-center justify-between p-2 fixed w-screen ">
           <div className="text-fluid">
             <Link to={"/"}>PolyHousing</Link>
           </div>
@@ -38,24 +47,34 @@ export function NavBar() {
             <div className="relative md:hidden">
               <button
                 onClick={() => setActive(!isActive)}
-                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-800 shadow-sm transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+                className="rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-brand-800 shadow-sm transition hover:bg-brand-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300"
               >
                 <FontAwesomeIcon className="fa-1x" icon={faBars} />
               </button>
               {isActive && (
                 <div
                   ref={wrapperRef}
-                  className="absolute right-0 mt-2 min-w-48 rounded-xl border border-slate-200 bg-white p-2 shadow-md"
+                  className="absolute right-0 mt-2 min-w-48 rounded-xl border border-brand-200 bg-brand-100 p-2 shadow-md"
                 >
-                  <ul className="flex min-w-max flex-col gap-1 rounded-lg p-2 text-slate-700">
+                  <ul className="flex min-w-max flex-col gap-1 rounded-lg p-2 text-brand-700">
                     <NavLinks />
                   </ul>
                 </div>
               )}
             </div>
-            <button>
-              <FontAwesomeIcon className="fa-2x" icon={faMoon} />
-            </button>
+            <label htmlFor="change-theme">
+              <button
+                id="change-theme"
+                onClick={() => setIsDark((d) => !d)}
+                className={`cursor-pointer ${isDark ? "text-accent-200" : ""}`}
+              >
+                <FontAwesomeIcon
+                  id="change-theme"
+                  className="fa-2x"
+                  icon={faMoon}
+                />
+              </button>
+            </label>
           </div>
         </div>
       </nav>

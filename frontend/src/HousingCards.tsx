@@ -16,7 +16,7 @@ interface HousingCardProps {
   bathrooms: number;
   squareFootage: number;
   rentPerMonth: number;
-  isAvailable: boolean;
+  postedBy: "agent" | "student";
   cardImage?: string;
   size?: CardSize;
 }
@@ -58,7 +58,7 @@ export function HousingCard({
   bathrooms,
   squareFootage,
   rentPerMonth,
-  isAvailable,
+  postedBy,
   cardImage,
   size = "md",
 }: HousingCardProps) {
@@ -75,11 +75,11 @@ export function HousingCard({
   return (
     <Link
       to={`/listing/${id}`}
-      className="group block rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
+      className="group flex flex-col rounded-2xl overflow-hidden bg-brand-100 shadow-sm border border-brand-200 hover:shadow-md transition-shadow duration-200"
     >
       {/* Image */}
       <div
-        className={`relative w-full ${imageHeight} overflow-hidden bg-gray-100`}
+        className={`relative w-full ${imageHeight} overflow-hidden bg-brand-100`}
       >
         {cardImage ? (
           <img
@@ -88,82 +88,82 @@ export function HousingCard({
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-300">
+          <div className="w-full h-full flex items-center justify-center bg-brand-100 text-brand-300">
             🏠
           </div>
         )}
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex gap-2">
-          <span className="bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
+          <span className="bg-brand-900/80 backdrop-blur-sm text-brand-50 text-xs font-semibold px-2.5 py-1 rounded-full">
             {typeLabel[type]}
           </span>
         </div>
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-3 right-3 flex">
           <span
             className={`text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm ${
-              isAvailable
-                ? "bg-emerald-500 text-white"
-                : "bg-gray-400 text-white"
+              postedBy === "agent"
+                ? "bg-accent-500 text-white"
+                : "bg-red-600 text-white"
             }`}
           >
-            {isAvailable ? "Available" : "Unavailable"}
+            {postedBy === "agent" ? "Agent" : "Student"}
           </span>
         </div>
       </div>
 
       {/* Info */}
-      <div className={`${padding} flex flex-col gap-2`}>
+      <div className={`${padding} flex flex-col gap-2 flex-1`}>
         {/* Price */}
         <div className="flex items-baseline justify-between">
-          <p className={`${titleSize} font-bold text-gray-900`}>
+          <p className={`${titleSize} font-bold text-brand-900`}>
             ${rentPerMonth.toLocaleString()}
-            <span className={`${textSize} font-normal text-gray-400 ml-1`}>
+            <span className={`${textSize} font-normal text-brand-700 ml-1`}>
               /mo
             </span>
           </p>
-          <span className={`${textSize} text-gray-400`}>
+          <span className={`${textSize} text-brand-700`}>
             {distanceToCampus} mi to campus
           </span>
         </div>
 
         {/* Stats row */}
         <div
-          className={`flex items-center gap-2 ${textSize} font-medium text-gray-700`}
+          className={`flex items-center gap-2 ${textSize} font-medium text-brand-700`}
         >
           {bedrooms > 0 ? (
             <span>
               {bedrooms}{" "}
-              <span className="font-normal text-gray-400">
+              <span className="font-normal text-brand-700">
                 {bedrooms === 1 ? "bd" : "bds"}
               </span>
             </span>
           ) : (
-            <span className="font-normal text-gray-400">Studio</span>
+            <span className="font-normal text-brand-700">Studio</span>
           )}
-          <span className="text-gray-200">|</span>
+          <span className="text-brand-700">|</span>
           <span>
             {bathrooms}{" "}
-            <span className="font-normal text-gray-400">
+            <span className="font-normal text-brand-700">
               {bathrooms === 1 ? "ba" : "bas"}
             </span>
           </span>
-          <span className="text-gray-200">|</span>
+          <span className="text-brand-700">|</span>
           <span>
             {squareFootage.toLocaleString()}{" "}
-            <span className="font-normal text-gray-400">sqft</span>
+            <span className="font-normal text-brand-700">sqft</span>
           </span>
         </div>
 
         {/* Address */}
         <address
-          className={`not-italic ${textSize} text-gray-500 leading-snug`}
+          className={`not-italic ${textSize} text-brand-700 leading-snug flex-1`}
         >
           {address}, {city}, {state} {zipCode}
         </address>
 
         {/* Campus tag */}
-        <p className={`${textSize} text-indigo-500 font-medium`}>{campus}</p>
+        <p className={`${textSize} text-accent-500 font-medium`}>{campus}</p>
       </div>
     </Link>
   );

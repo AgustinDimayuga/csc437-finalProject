@@ -12,6 +12,7 @@ interface AccountSettingsProps {
       email?: string;
       password?: string;
     };
+    success?: boolean;
   };
 }
 export function AccountSettings({ data, formAction }: AccountSettingsProps) {
@@ -32,22 +33,22 @@ export function AccountSettings({ data, formAction }: AccountSettingsProps) {
   return (
     <form
       action={formAction}
-      className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm md:min-h-96"
+      className="h-full rounded-xl border border-brand-200 bg-brand-100 p-6 shadow-sm"
     >
       <fieldset className="flex h-full flex-col gap-4">
-        <legend className="mb-1 text-lg font-semibold text-slate-900">
+        <legend className="mb-1 text-lg font-semibold text-brand-900">
           Account Settings
         </legend>
 
         <label
           htmlFor="username"
-          className="text-sm font-medium text-slate-700"
+          className="text-sm font-medium text-brand-700"
         >
           Username
         </label>
         <input
           ref={usernameRef}
-          className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          className="w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-base text-brand-900 outline-none transition focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
           type="text"
           id="username"
           name="username"
@@ -57,15 +58,15 @@ export function AccountSettings({ data, formAction }: AccountSettingsProps) {
           defaultValue={data?.values?.username}
         />
         {data?.errors?.username && (
-          <span className="text-sm text-red-600">{data.errors.username}</span>
+          <span className="text-sm text-accent-500">{data.errors.username}</span>
         )}
 
-        <label htmlFor="email" className="text-sm font-medium text-slate-700">
+        <label htmlFor="email" className="text-sm font-medium text-brand-700">
           Email
         </label>
         <input
           ref={emailRef}
-          className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          className="w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-base text-brand-900 outline-none transition focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
           type="text"
           id="email"
           name="email"
@@ -74,18 +75,18 @@ export function AccountSettings({ data, formAction }: AccountSettingsProps) {
           defaultValue={data?.values?.email}
         />
         {data?.errors?.email && (
-          <span className="text-sm text-red-600">{data.errors.email}</span>
+          <span className="text-sm text-accent-500">{data.errors.email}</span>
         )}
 
         <label
           htmlFor="password"
-          className="text-sm font-medium text-slate-700"
+          className="text-sm font-medium text-brand-700"
         >
           Password
         </label>
         <input
           ref={passwordRef}
-          className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          className="w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-base text-brand-900 outline-none transition focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
           type="password"
           id="password"
           name="password"
@@ -93,15 +94,18 @@ export function AccountSettings({ data, formAction }: AccountSettingsProps) {
           aria-invalid={!!data?.errors?.password}
         />
         {data?.errors?.password && (
-          <span className="text-sm text-red-600">{data.errors.password}</span>
+          <span className="text-sm text-accent-500">{data.errors.password}</span>
         )}
 
         <button
           type="submit"
-          className="mt-auto rounded-lg bg-slate-900 px-4 py-2 font-medium text-white transition hover:bg-slate-800"
+          className="mt-auto rounded-lg bg-brand-900 px-4 py-2 font-medium text-white transition hover:bg-brand-800"
         >
           Save Changes
         </button>
+        {data?.success && (
+          <p className="text-sm text-brand-600">Changes saved</p>
+        )}
       </fieldset>
     </form>
   );

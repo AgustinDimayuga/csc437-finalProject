@@ -8,7 +8,7 @@ export function TrendingListings() {
   return (
     <MoreInformation
       heading="Trending Homes in San Luis Obispo"
-      className="bg-stone-50"
+      className="bg-brand-50"
     >
       {trending.map((listing) => (
         <HousingCard
@@ -25,7 +25,7 @@ export function TrendingListings() {
           bathrooms={listing.bathrooms}
           squareFootage={listing.squareFootage}
           rentPerMonth={listing.rentPerMonth}
-          isAvailable={listing.isAvailable}
+          postedBy={listing.postedBy}
           cardImage={listing.images[0]}
           size="lg"
         />
