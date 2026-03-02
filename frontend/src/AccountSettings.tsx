@@ -55,10 +55,13 @@ export function AccountSettings({ data, formAction }: AccountSettingsProps) {
           autoComplete="off"
           placeholder="Your username"
           aria-invalid={!!data?.errors?.username}
+          aria-describedby={data?.errors?.username}
           defaultValue={data?.values?.username}
         />
         {data?.errors?.username && (
-          <span className="text-sm text-accent-500">{data.errors.username}</span>
+          <span className="text-sm text-accent-500">
+            {data.errors.username}
+          </span>
         )}
 
         <label htmlFor="email" className="text-sm font-medium text-brand-700">
@@ -94,7 +97,9 @@ export function AccountSettings({ data, formAction }: AccountSettingsProps) {
           aria-invalid={!!data?.errors?.password}
         />
         {data?.errors?.password && (
-          <span className="text-sm text-accent-500">{data.errors.password}</span>
+          <span className="text-sm text-accent-500">
+            {data.errors.password}
+          </span>
         )}
 
         <button

@@ -87,6 +87,8 @@ export function SignInPage({
               placeholder="Your username"
               defaultValue={data.values.userName}
               className="w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-base text-brand-900 outline-none transition focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
+              aria-invalid={!!data.errors.userName}
+              aria-describedby={data.errors.userName}
             />
             {data.errors.userName && (
               <span className="text-sm text-accent-500">
@@ -110,6 +112,8 @@ export function SignInPage({
               placeholder="you@example.com"
               defaultValue={data.values.emailAddress}
               className="w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-base text-brand-900 outline-none transition focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
+              aria-invalid={!!data.errors.emailAddress}
+              aria-describedby={data.errors.emailAddress}
             />
             {data.errors.emailAddress && (
               <span className="text-sm text-accent-500">

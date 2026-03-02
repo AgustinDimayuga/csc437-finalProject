@@ -52,7 +52,7 @@ function App() {
               <HomeListings listings={listings} setListings={setListings} />
             }
           />
-          <Route path="/listing/:id" element={<ListingInformation />} />
+          <Route path="/listing/:id" element={<ListingInformation listings={listings} />} />
           <Route
             path="/signIn"
             element={

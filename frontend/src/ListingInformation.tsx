@@ -1,6 +1,5 @@
 import { useParams } from "react-router";
-import { fetchById } from "./ListingsArrays";
-import { ListingType } from "./Listing.interface";
+import { Listing, ListingType } from "./Listing.interface";
 import { ListingHero } from "./ListingHero";
 import { ListingStatsStrip } from "./ListingStatsStrip";
 import { ListingContactCard } from "./ListingContactCard";
@@ -15,9 +14,9 @@ const typeLabel: Record<ListingType, string> = {
   condo: "Condo",
 };
 
-export function ListingInformation() {
+export function ListingInformation({ listings }: { listings: Listing[] }) {
   const { id } = useParams();
-  const listing = fetchById(Number.parseInt(id!));
+  const listing = listings.find((l) => l.id === Number.parseInt(id!));
 
   if (!listing) {
     return (
@@ -34,7 +33,7 @@ export function ListingInformation() {
 
   const formattedAvailable = new Date(listing.availableFrom).toLocaleDateString(
     "en-US",
-    { year: "numeric", month: "long", day: "numeric" }
+    { year: "numeric", month: "long", day: "numeric" },
   );
 
   return (
@@ -117,9 +116,7 @@ export function ListingInformation() {
 
           {/* Amenities */}
           <section className="bg-brand-100 rounded-2xl border border-brand-200 p-6">
-            <h2 className="text-lg font-bold text-brand-900 mb-4">
-              Amenities
-            </h2>
+            <h2 className="text-lg font-bold text-brand-900 mb-4">Amenities</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <AmenityChip
                 label="Pets Allowed"
@@ -146,7 +143,11 @@ export function ListingInformation() {
                 active={listing.amenities.furnished}
                 icon="🛋️"
               />
-              <AmenityChip label="A/C" active={listing.amenities.ac} icon="❄️" />
+              <AmenityChip
+                label="A/C"
+                active={listing.amenities.ac}
+                icon="❄️"
+              />
               <AmenityChip
                 label="Gym"
                 active={listing.amenities.gym}

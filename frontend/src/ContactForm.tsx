@@ -42,6 +42,7 @@ export function ContactForm({ data, formAction }: ContactFormProps) {
           id="subject"
           type="text"
           aria-invalid={!!data?.errors?.subject}
+          aria-describedby={data?.errors?.subject}
           ref={subjectRef}
           className="w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-brand-900 outline-none transition focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
           defaultValue={data.values.subject}
@@ -62,6 +63,7 @@ export function ContactForm({ data, formAction }: ContactFormProps) {
           id="first-name"
           type="text"
           aria-invalid={!!data.errors?.firstName}
+          aria-describedby={data.errors?.firstName}
           ref={firstNameRef}
           className="w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-brand-900 outline-none transition focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
           defaultValue={data.values.firstName}
@@ -85,6 +87,7 @@ export function ContactForm({ data, formAction }: ContactFormProps) {
           id="last-name"
           type="text"
           aria-invalid={!!data.errors?.lastName}
+          aria-describedby={data.errors?.lastName}
           ref={lastNameRef}
           className="w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-brand-900 outline-none transition focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
           defaultValue={data.values.lastName}
@@ -106,6 +109,7 @@ export function ContactForm({ data, formAction }: ContactFormProps) {
           id="email"
           type="text"
           aria-invalid={!!data.errors?.email}
+          aria-describedby={data.errors?.email}
           ref={emailRef}
           className="w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-brand-900 outline-none transition focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
           defaultValue={data.values.email}
@@ -128,6 +132,7 @@ export function ContactForm({ data, formAction }: ContactFormProps) {
           rows={4}
           placeholder="Describe your listing..."
           aria-invalid={!!data.errors?.message}
+          aria-describedby={data.errors.message}
           ref={messageRef}
           className="min-h-32 w-full rounded-lg border border-brand-300 bg-brand-100 px-3 py-2 text-brand-900 outline-none transition placeholder:text-brand-500 focus:border-brand-700 focus:ring-2 focus:ring-brand-200"
           defaultValue={data.values.message}
