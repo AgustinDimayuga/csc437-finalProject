@@ -24,25 +24,25 @@
 
   body {
     @apply bg-brand-50 text-brand-900;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   body.dark {
-    /* Fully inverted scale — low numbers are dark, high numbers are light.
-       Every brand color class adapts automatically. */
-    --brand-50:  28 28 32;      /* page background — comfortable dark   */
-    --brand-100: 39 39 42;      /* card / surface background            */
-    --brand-200: 55 55 60;      /* subtle borders                       */
-    --brand-300: 70 70 77;      /* borders                              */
-    --brand-400: 90 90 100;     /* muted elements                       */
-    --brand-500: 113 113 122;   /* mid-tone (unchanged)                 */
-    --brand-600: 161 161 170;   /* secondary text                       */
-    --brand-700: 200 200 208;   /* body text                            */
-    --brand-800: 220 220 227;   /* prominent text                       */
-    --brand-900: 242 242 247;   /* primary text — near white            */
-    --brand-950: 252 252 255;   /* near white                           */
+    --brand-50: 28 28 32; /* page background — comfortable dark   */
+    --brand-100: 39 39 42; /* card / surface background            */
+    --brand-200: 55 55 60; /* subtle borders                       */
+    --brand-300: 70 70 77; /* borders                              */
+    --brand-400: 90 90 100; /* muted elements                       */
+    --brand-500: 113 113 122; /* mid-tone (unchanged)                 */
+    --brand-600: 161 161 170; /* secondary text                       */
+    --brand-700: 200 200 208; /* body text                            */
+    --brand-800: 220 220 227; /* prominent text                       */
+    --brand-900: 242 242 247; /* primary text — near white            */
+    --brand-950: 252 252 255; /* near white                           */
 
-    --accent-500: 139 92 246;   /* violet-500: good contrast with white */
+    --accent-500: 139 92 246; /* violet-500: good contrast with white */
     --accent-200: 237 233 254;
 
     background-color: rgb(var(--brand-50));
@@ -54,7 +54,9 @@
   .navbar-surface {
     background-color: rgb(var(--brand-200) / 0.95);
     border-bottom: 1px solid rgb(var(--brand-300));
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease;
   }
 
   body.dark .navbar-surface {
@@ -70,27 +72,18 @@
   }
 }
 
-/*
-  These rules are intentionally OUTSIDE any @layer so they are unlayered.
-  Unlayered CSS always beats layered CSS (including Tailwind's @layer utilities),
-  regardless of specificity — this is the only reliable way to override
-  Tailwind utilities in dark mode without !important.
-*/
-
-/* Buttons: bg-brand-900 is near-white in dark mode — use accent instead */
 body.dark .bg-brand-900 {
-  background-color: rgb(109 40 217);   /* violet-700 — ~6.6:1 contrast with white */
+  background-color: rgb(109 40 217);
 }
 
 body.dark .hover\:bg-brand-800:hover {
-  background-color: rgb(91 33 182);    /* violet-800 — ~8.3:1 contrast with white */
+  background-color: rgb(91 33 182);
 }
 
 body.dark .disabled\:bg-brand-400:disabled {
   background-color: rgb(var(--brand-300));
 }
 
-/* Focus rings: brand-200 is dark in dark mode — use accent for visibility */
 body.dark .focus\:ring-brand-200:focus {
   --tw-ring-color: rgb(139 92 246 / 0.45);
 }
@@ -99,30 +92,24 @@ body.dark .focus-visible\:ring-brand-300:focus-visible {
   --tw-ring-color: rgb(139 92 246 / 0.45);
 }
 
-/* Campus tag: text-accent-500 on dark card bg is only ~3.5:1 — use violet-400 (~4.9:1) */
 body.dark .text-accent-500 {
   color: rgb(167 139 250);
 }
 
-/* Available badge: bg-accent-500 with white text is only ~4.2:1 — use violet-700 (~6.5:1) */
 body.dark .bg-accent-500 {
   background-color: rgb(109 40 217);
 }
 
-/* bg-white is not a CSS variable — map it to the dark card surface */
 body.dark .bg-white {
   background-color: rgb(var(--brand-100));
 }
 
-/* Light mode: bg-accent-200 is soft lavender.
-   Dark mode: override to the same bold violet-700 used for bg-accent-500 */
 body.dark .bg-accent-200 {
-  background-color: rgb(109 40 217);   /* violet-700 */
+  background-color: rgb(109 40 217);
 }
 
-/* hover:bg-accent-500 in dark mode: violet-800 for hover depth */
 body.dark .hover\:bg-accent-500:hover {
-  background-color: rgb(91 33 182);    /* violet-800 */
+  background-color: rgb(91 33 182);
 }
 
 body.dark .bg-white\/90 {

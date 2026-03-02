@@ -1,6 +1,6 @@
 import { AccountSettings } from "./AccountSettings";
 import { WebSettings } from "./WebSettings";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 type FormState = {
   errors: {
@@ -84,7 +84,14 @@ export function SettingsPage({
   const [dataPreferences, formActionPreferences, isPending] = useActionState<
     Data,
     FormData
-  >(submitPreferences, initialState);
+  >(submitPreferences, {
+    ...initialState,
+    theme: document.body.classList.contains("dark") ? "Dark" : "Light",
+  });
+
+  useEffect(() => {
+    document.body.classList.toggle("dark", dataPreferences.theme === "Dark");
+  }, [dataPreferences.theme]);
 
   return (
     <div className="container-information">

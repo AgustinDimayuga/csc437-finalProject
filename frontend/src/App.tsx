@@ -11,7 +11,7 @@ import { initialListings } from "./ListingsArrays";
 import { useState } from "react";
 import { ListingInformation } from "./ListingInformation";
 import { SignInPage } from "./SignInPage";
-
+import { ListAHome } from "./ListAHome";
 function App() {
   const [isSignedIn, setSignedIn] = useState(false);
   const [listings, setListings] = useState(initialListings);
@@ -21,7 +21,10 @@ function App() {
     <>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<MainLayout isSignedIn={isSignedIn} userName={userName} />}>
+        <Route
+          path="/"
+          element={<MainLayout isSignedIn={isSignedIn} userName={userName} />}
+        >
           <Route index element={<Home />} />
           <Route
             path="/settings"
@@ -58,6 +61,24 @@ function App() {
                 setUserName={setUsername}
                 setIsSignedIn={setSignedIn}
               />
+            }
+          />
+          <Route
+            path="/AddListing"
+            element={
+              isSignedIn ? (
+                <ListAHome
+                  userName={userName}
+                  emailAddress={emailAdress}
+                  setListings={setListings}
+                />
+              ) : (
+                <SignInPage
+                  setEmailAddress={setEmailAdress}
+                  setUserName={setUsername}
+                  setIsSignedIn={setSignedIn}
+                />
+              )
             }
           />
         </Route>

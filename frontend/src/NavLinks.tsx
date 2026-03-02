@@ -8,7 +8,7 @@ export interface NavLinkItem {
 export const NAVLINKS: NavLinkItem[] = [
   { label: "Home", to: "/" },
   { label: "Browse Homes", to: "/HomeListings" },
-  { label: "List a Home", to: "#x" },
+  { label: "List a Home", to: "/AddListing" },
   { label: "Settings", to: "/settings" },
   { label: "Contact Us", to: "/contact" },
 ];
