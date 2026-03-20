@@ -48,11 +48,12 @@ function App() {
           <Route path="/contact" element={<ContactUs />} />
           <Route
             path="/HomeListings"
-            element={
-              <HomeListings listings={listings} setListings={setListings} />
-            }
+            element={<HomeListings listings={listings} />}
           />
-          <Route path="/listing/:id" element={<ListingInformation listings={listings} />} />
+          <Route
+            path="/listing/:id"
+            element={<ListingInformation listings={listings} />}
+          />
           <Route
             path="/signIn"
             element={

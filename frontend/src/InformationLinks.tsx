@@ -21,7 +21,7 @@ const INFOCARDINFORMATION: infoCard[] = [
       "Any licensed Real Estate agent can list a home. Simply upload information, photos and students can quickly and easily message you. Get you house rented within days ",
     icon: faHandshake,
     buttonText: "Add a Listing",
-    to: "#x",
+    to: "/AddListing",
   },
   {
     heading: "Campus Partners",

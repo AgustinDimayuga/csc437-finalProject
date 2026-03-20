@@ -4,7 +4,6 @@ import { HousingCard } from "./HousingCards";
 import { useActionState } from "react";
 interface HomeListingsProps {
   listings: Listing[];
-  setListings: React.Dispatch<React.SetStateAction<Listing[]>>;
 }
 export interface FilterData {
   campus: string;
@@ -23,7 +22,7 @@ const initialData: FilterData = {
   postedBy: "",
 };
 
-export function HomeListings({ listings, setListings }: HomeListingsProps) {
+export function HomeListings({ listings }: HomeListingsProps) {
   const [data, formSubmit] = useActionState(
     (_prevData: FilterData, formData: FormData): FilterData => ({
       campus: formData.get("campus") as string,
