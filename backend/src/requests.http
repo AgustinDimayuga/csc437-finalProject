@@ -31,7 +31,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc
 
 ### Delete Image by ID INVALID ID
 
-DELETE http://localhost:3000/api/listings/69bdffa3f0ded0e14a4abd34 HTTP/1.1
+DELETE http://localhost:3000/api/listings/69bdff53f0ded0e14a4abd23 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRlcmVrLmxhbUBlbWFpbC5jb20iLCJpYXQiOjE3NzQwNzM4MTEsImV4cCI6MTc3NDE2MDIxMX0.Ek0ONBbW8bQzRHb64Wiy8SYD-ha8v3_gPBlMrEyQKdI
 
 

@@ -30,6 +30,12 @@ export function registerAuthRoutes(
 ): void {
   app.post("/api/users", async (req: Request, res: Response) => {
     // TODO: Make sure req body is not null
+    if (!req.body) {
+      return res.status(400).json({
+        error: "Bad request",
+        message: "Empty Body",
+      });
+    }
     const { name, email, password, phone, type } = req.body;
 
     if (

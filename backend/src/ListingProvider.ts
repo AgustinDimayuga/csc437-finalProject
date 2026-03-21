@@ -93,4 +93,49 @@ export class ListingProvider {
     // Do not own unauthorized
     return -1;
   }
+  async createListing(
+    listingData: {
+      campus: string;
+      address: string;
+      city: string;
+      state: string;
+      zipCode: string;
+      distanceToCampus: number;
+      type: string;
+      bedrooms: number;
+      bathrooms: number;
+      squareFootage: number;
+      rentPerMonth: number;
+      depositAmount: number;
+      utilitiesIncluded: boolean;
+      availableFrom: string;
+      leaseDuration: number;
+      amenities: object;
+    },
+    postedByEmail: string,
+    imageFilenames: string[],
+  ): Promise<string> {
+    // Validate numbers parsed correctly
+    if (
+      isNaN(listingData.distanceToCampus) ||
+      isNaN(listingData.bedrooms) ||
+      isNaN(listingData.bathrooms) ||
+      isNaN(listingData.squareFootage) ||
+      isNaN(listingData.rentPerMonth) ||
+      isNaN(listingData.depositAmount) ||
+      isNaN(listingData.leaseDuration)
+    ) {
+      throw new Error("Invalid numeric fields");
+    }
+
+    const result = await this.collection.insertOne({
+      ...listingData,
+      images: imageFilenames,
+      postedByEmail,
+      listedAt: new Date().toISOString().split("T")[0],
+      updatedAt: new Date().toISOString().split("T")[0],
+    });
+
+    return result.insertedId.toString();
+  }
 }

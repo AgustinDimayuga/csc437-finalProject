@@ -1,6 +1,10 @@
 import { JwtPayload } from "jsonwebtoken";
 import { ListingProvider } from "../ListingProvider.js";
-import { Express, response } from "express";
+import { Express, Response, Request } from "express";
+import {
+  handleImageFileErrors,
+  imageMiddlewareFactory,
+} from "../imageUploadMiddleware.js";
 
 export function registerListingRoutes(
   app: Express,
@@ -11,6 +15,108 @@ export function registerListingRoutes(
     const response = await listingProvider.getAllListingsWithPoster();
     res.send(response);
   });
+  app.post(
+    "/api/listings",
+    imageMiddlewareFactory.array("image"),
+    handleImageFileErrors,
+    async (req: Request, res: Response) => {
+      try {
+        const files = req.files as Express.Multer.File[];
+        const {
+          campus,
+          address,
+          city,
+          state,
+          zipCode,
+          distanceToCampus,
+          type,
+          bedrooms,
+          bathrooms,
+          squareFootage,
+          rentPerMonth,
+          depositAmount,
+          utilitiesIncluded,
+          availableFrom,
+          leaseDuration,
+          amenities,
+        } = req.body;
+
+        // Check required fields
+        if (
+          !campus ||
+          !address ||
+          !city ||
+          !state ||
+          !zipCode ||
+          !distanceToCampus ||
+          !type ||
+          !bedrooms ||
+          !bathrooms ||
+          !squareFootage ||
+          !rentPerMonth ||
+          !depositAmount ||
+          utilitiesIncluded === undefined ||
+          !availableFrom ||
+          !leaseDuration ||
+          !amenities
+        ) {
+          return res.status(400).json({
+            error: "Bad Request",
+            message: "Missing required listing fields",
+          });
+        }
+
+        // Parse amenities safely
+        let parsedAmenities;
+        try {
+          parsedAmenities = JSON.parse(amenities);
+        } catch {
+          return res.status(400).json({
+            error: "Bad Request",
+            message: "amenities must be a valid JSON string",
+          });
+        }
+
+        const email = (req.userInfo as JwtPayload)?.username;
+        if (!email) {
+          return res.status(401).json({
+            error: "Unauthorized",
+            message: "Could not identify user from token",
+          });
+        }
+
+        const imageFilenames = files ? files.map((file) => file.filename) : [];
+
+        const id = await listingProvider.createListing(
+          {
+            campus,
+            address,
+            city,
+            state,
+            zipCode,
+            distanceToCampus: parseFloat(distanceToCampus),
+            type,
+            bedrooms: parseInt(bedrooms),
+            bathrooms: parseInt(bathrooms),
+            squareFootage: parseInt(squareFootage),
+            rentPerMonth: parseFloat(rentPerMonth),
+            depositAmount: parseFloat(depositAmount),
+            utilitiesIncluded: utilitiesIncluded === "true",
+            availableFrom,
+            leaseDuration: parseInt(leaseDuration),
+            amenities: parsedAmenities,
+          },
+          email,
+          imageFilenames,
+        );
+
+        return res.status(201).json({ _id: id });
+      } catch (e) {
+        console.error(e);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+    },
+  );
 
   app.get("/api/listings/:id", async (req, res) => {
     // Use req.params.id to get id parameter from string
