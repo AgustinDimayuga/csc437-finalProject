@@ -40,6 +40,14 @@ export class ListingProvider {
     return this.collection.aggregate(pipeline).toArray();
   }
 
+  async getListingsByUser(email: string) {
+    console.log(email);
+    const response = this.collection.find({ postedByEmail: email });
+    if (!response) {
+      return -1;
+    }
+    return response.toArray();
+  }
   getOneListing(listingID: string) {
     if (!ObjectId.isValid(listingID)) {
       return null;

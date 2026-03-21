@@ -17,6 +17,7 @@ const app: Express = express();
 const myMongoClient = connectMongo();
 // Setup middleware so we can read body
 app.use("/api/listings", verifyAuthToken);
+app.use("/api/users/listings", verifyAuthToken);
 app.use(express.json());
 
 // Use mongo CLient to log connection works
@@ -35,11 +36,11 @@ app.listen(PORT, () => {
 
 // Get the static directory of the built files
 const STATIC_DIR = getEnvVar("STATIC_DIR") || "public";
-app.use(express.static(STATIC_DIR));
-
 // Get the index.html from the built files directory and server them on any of the ValidRoutes see VALID_ROUTES Folder
 app.get(Object.values(VALID_ROUTES), (req, res) => {
   res.sendFile("index.html", { root: STATIC_DIR });
 });
 registerListingRoutes(app, new ListingProvider(myMongoClient));
 registerAuthRoutes(app, new CredentialProvider(myMongoClient));
+app.use(express.static(STATIC_DIR));
+app.use("/uploads", express.static(getEnvVar("IMAGE_UPLOAD_DIR") as string));

@@ -17,7 +17,7 @@ export function registerListingRoutes(
   });
   app.post(
     "/api/listings",
-    imageMiddlewareFactory.array("image"),
+    imageMiddlewareFactory.array("images"),
     handleImageFileErrors,
     async (req: Request, res: Response) => {
       try {
@@ -155,6 +155,23 @@ export function registerListingRoutes(
       return res.status(204).send();
     } catch (e) {
       console.error("failed to update image", e);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+  app.get("/api/users/listings", async (req: Request, res: Response) => {
+    try {
+      const response = await listingProvider.getListingsByUser(
+        (req.userInfo as JwtPayload).username,
+      );
+      if (response == -1) {
+        return res.status(404).send({
+          error: "Not Found",
+          message: "No listing with that ID",
+        });
+      }
+      return res.send(response);
+    } catch (e) {
+      console.error(e);
       return res.status(500).json({ error: "Internal Server Error" });
     }
   });
