@@ -1,0 +1,75 @@
+### Get all images. Each request **MUST** be delimited by a triple hash
+
+# This is a comment
+
+GET http://localhost:3000/api/listings HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyX25ld0BleGFtcGxlLmNvbSIsImlhdCI6MTc3NDA3MzY5NiwiZXhwIjoxNzc0MTYwMDk2fQ.NCU55_2cAwwm_bv_WIzMRarMwMuvmMAR5eHU9rjk6SA
+
+
+### A second example. Each request **MUST** be delimited by a triple hash
+
+POST http://localhost:3000/api/test HTTP/1.1
+Content-Type: application/json # Content-Type header is a must if you're sending JSON
+
+{
+  "a": 1,
+  "b": 2
+}
+
+
+### Get an Image by ID
+
+GET http://localhost:3000/api/listings/69bdff53f0ded0e14a4abd16 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyX25ld0BleGFtcGxlLmNvbSIsImlhdCI6MTc3NDA3MzY5NiwiZXhwIjoxNzc0MTYwMDk2fQ.NCU55_2cAwwm_bv_WIzMRarMwMuvmMAR5eHU9rjk6SA
+
+
+### Get an Image by ID INVALID ID
+
+GET http://localhost:3000/api/listings/6ded0e14a4abd15 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyX25ld0BleGFtcGxlLmNvbSIsImlhdCI6MTc3NDA3MzY5NiwiZXhwIjoxNzc0MTYwMDk2fQ.NCU55_2cAwwm_bv_WIzMRarMwMuvmMAR5eHU9rjk6SA
+
+
+### Delete Image by ID INVALID ID
+
+DELETE http://localhost:3000/api/listings/69bdffa3f0ded0e14a4abd34 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRlcmVrLmxhbUBlbWFpbC5jb20iLCJpYXQiOjE3NzQwNzM4MTEsImV4cCI6MTc3NDE2MDIxMX0.Ek0ONBbW8bQzRHb64Wiy8SYD-ha8v3_gPBlMrEyQKdI
+
+
+### Delete Image by ID
+
+DELETE http://localhost:3000/api/listings/69bdff53f0ded0e14a4abd1f HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRlcmVrLmxhbUBlbWFpbC5jb20iLCJpYXQiOjE3NzQwNzM4MTEsImV4cCI6MTc3NDE2MDIxMX0.Ek0ONBbW8bQzRHb64Wiy8SYD-ha8v3_gPBlMrEyQKdI
+
+
+### Create User
+
+# [Account Creation] 201 Created — new unique user
+# Expect: 201 Created + auth token in body
+
+POST http://localhost:3000/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "testuser_new@example.com",
+  "name": "testuser_new",
+  "password": "password123",
+  "phone": "714-376-9559",
+  "type": "agent"
+}
+
+
+### Create User
+
+# [Account Creation] 201 Created — new unique user
+# Expect: 201 Created + auth token in body
+
+POST http://localhost:3000/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "derek.lam@email.com",
+  "name": "testuser_new",
+  "password": "password123",
+  "phone": "714-376-9559",
+  "type": "agent"
+}

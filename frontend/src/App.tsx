@@ -12,6 +12,7 @@ import { useState } from "react";
 import { ListingInformation } from "./ListingInformation";
 import { SignInPage } from "./SignInPage";
 import { ListAHome } from "./ListAHome";
+import { VALID_ROUTES } from "./shared/ValidRoutes";
 function App() {
   const [isSignedIn, setSignedIn] = useState(false);
   const [listings, setListings] = useState(initialListings);
@@ -22,12 +23,12 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route
-          path="/"
+          path={VALID_ROUTES.HOME}
           element={<MainLayout isSignedIn={isSignedIn} userName={userName} />}
         >
           <Route index element={<Home />} />
           <Route
-            path="/settings"
+            path={VALID_ROUTES.SETTINGS}
             element={
               isSignedIn ? (
                 <SettingsPage
@@ -45,17 +46,17 @@ function App() {
               )
             }
           />
-          <Route path="/contact" element={<ContactUs />} />
+          <Route path={VALID_ROUTES.CONTACT} element={<ContactUs />} />
           <Route
-            path="/HomeListings"
+            path={VALID_ROUTES.HOMELISTINGS}
             element={<HomeListings listings={listings} />}
           />
           <Route
-            path="/listing/:id"
+            path={VALID_ROUTES.LISTING}
             element={<ListingInformation listings={listings} />}
           />
           <Route
-            path="/signIn"
+            path={VALID_ROUTES.SIGNIN}
             element={
               <SignInPage
                 setEmailAddress={setEmailAdress}
@@ -65,7 +66,7 @@ function App() {
             }
           />
           <Route
-            path="/AddListing"
+            path={VALID_ROUTES.ADDLISTING}
             element={
               isSignedIn ? (
                 <ListAHome
