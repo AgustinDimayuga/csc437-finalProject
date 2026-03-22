@@ -14,11 +14,11 @@ export const NAVLINKS: NavLinkItem[] = [
 ];
 
 interface NavLinksProps {
-  isSignedIn: boolean;
+  authToken: string;
   userName: string;
 }
 
-export function NavLinks({ isSignedIn, userName }: NavLinksProps) {
+export function NavLinks({ authToken, userName }: NavLinksProps) {
   const location = useLocation();
 
   return (
@@ -30,7 +30,7 @@ export function NavLinks({ isSignedIn, userName }: NavLinksProps) {
 
         const label =
           link.to === "/settings"
-            ? isSignedIn
+            ? authToken
               ? userName
               : "Account"
             : link.label;

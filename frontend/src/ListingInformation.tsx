@@ -5,6 +5,7 @@ import { ListingStatsStrip } from "./ListingStatsStrip";
 import { ListingContactCard } from "./ListingContactCard";
 import { InfoRow } from "./InfoRow";
 import { AmenityChip } from "./AmenityChip";
+import { useEffect, useState } from "react";
 
 const typeLabel: Record<ListingType, string> = {
   apartment: "Apartment",
@@ -14,9 +15,53 @@ const typeLabel: Record<ListingType, string> = {
   condo: "Condo",
 };
 
-export function ListingInformation({ listings }: { listings: Listing[] }) {
+export function ListingInformation({ authToken }: { authToken: string }) {
+  const [listing, setListingData] = useState<Listing>();
+  const [loadingState, setLoadingState] = useState(true);
+  const [errorDuringFetch, setErrorDuringFetch] = useState("");
   const { id } = useParams();
-  const listing = listings.find((l) => l.id === Number.parseInt(id!));
+  useEffect(() => {
+    async function fetchListings() {
+      try {
+        const response = await fetch(`/api/listings/${id}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        // If response is an error (ie., not okay throw error)
+        if (!response.ok) {
+          throw new Error(
+            `Error: HTTP ${response.status} ${response.statusText}`,
+          );
+        }
+
+        const result = await response.json();
+        setListingData(result);
+      } catch (error: any) {
+        console.error(error.message);
+        setErrorDuringFetch(error.message);
+      } finally {
+        setLoadingState(false);
+      }
+    }
+    fetchListings();
+  }, [authToken, id]);
+
+  if (loadingState) {
+    return (
+      <div className="container-information flex items-center justify-center">
+        <p className="text-brand-600">Loading listing…</p>
+      </div>
+    );
+  }
+
+  if (errorDuringFetch) {
+    return (
+      <div className="container-information flex items-center justify-center">
+        <p className="text-red-500">{errorDuringFetch}</p>
+      </div>
+    );
+  }
 
   if (!listing) {
     return (
@@ -42,7 +87,7 @@ export function ListingInformation({ listings }: { listings: Listing[] }) {
         images={listing.images}
         type={listing.type}
         campus={listing.campus}
-        postedBy={listing.postedBy}
+        postedBy={listing.contact.type}
         address={listing.address}
       />
 
@@ -170,17 +215,38 @@ export function ListingInformation({ listings }: { listings: Listing[] }) {
         {/* Right column — contact card */}
         <div className="space-y-6">
           <ListingContactCard
-            id={listing.id}
-            contactName={listing.contactName}
-            contactEmail={listing.contactEmail}
-            contactPhone={listing.contactPhone}
-            postedBy={listing.postedBy}
+            id={listing._id}
+            contactName={listing.contact.name}
+            contactEmail={listing.contact.email}
+            contactPhone={listing.contact.phone}
+            postedBy={listing.contact.type}
             address={listing.address}
             listedAt={listing.listedAt}
             updatedAt={listing.updatedAt}
           />
         </div>
       </div>
+
+      {/* Additional photos */}
+      {listing.images.length > 1 && (
+        <section className="bg-brand-100 rounded-2xl border border-brand-200 p-6">
+          <h2 className="text-lg font-bold text-brand-900 mb-4">More Photos</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {listing.images.slice(1).map((img, i) => (
+              <div
+                key={i}
+                className="aspect-video rounded-xl overflow-hidden border border-brand-200"
+              >
+                <img
+                  src={`/uploads/${img}`}
+                  alt={`${listing.address} photo ${i + 2}`}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

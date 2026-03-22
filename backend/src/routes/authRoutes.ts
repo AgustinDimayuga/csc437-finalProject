@@ -1,8 +1,9 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { Express, Request, Response } from "express";
 
 import { CredentialProvider } from "../CredentialsProvider.js";
 import { getEnvVar } from "../getEnvVar.js";
+import { verifyAuthToken } from "./verifyAuthToken.js";
 /**
  * Creates a Promise for a JWT token, with a specified username embedded inside.
  *
@@ -78,13 +79,39 @@ export function registerAuthRoutes(
 
     if (authResponse) {
       const token = await generateAuthToken(email);
-      return res.status(201).json({ token });
+      return res.status(201).json({ token, email });
     } else {
       return res.status(401).json({
         message: "Incorrect Username/ Password",
       });
     }
   });
+
+  app.get(
+    "/api/users/:email",
+    verifyAuthToken,
+    async (req: Request, res: Response) => {
+      const email = req.params.email as string;
+      const authenticatedEmail = (req.userInfo as JwtPayload).username;
+
+      if (authenticatedEmail !== email) {
+        return res.status(403).json({
+          error: "Forbidden",
+          message: "You can only access your own profile",
+        });
+      }
+
+      const user = await credentialsProvider.getUser(email);
+      if (!user) {
+        return res.status(404).json({
+          error: "Not found",
+          message: "User not found",
+        });
+      }
+
+      return res.status(200).json(user);
+    },
+  );
 
   app.post("/api/auth/tokens", async (req: Request, res: Response) => {
     const { email, password } = req.body;
@@ -105,7 +132,7 @@ export function registerAuthRoutes(
 
     if (response) {
       const token = await generateAuthToken(email);
-      return res.status(200).json({ token });
+      return res.status(200).json({ token, email });
     } else {
       return res.status(401).json({
         message: "Incorrect Username/ Password",

@@ -1,24 +1,56 @@
-import { ChangeEvent, useState } from "react";
-import { NavBar } from "./NavBar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faCow } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from "react";
 import { Hero } from "./Hero";
 import { TrendingListings } from "./TrendingListings";
+import { Listing } from "./Listing.interface";
 import { InformationLinks } from "./InformationLinks";
-import { Footer } from "./Footer";
-import { useActionState } from "react";
 
-export function Home() {
+export function Home({ authToken }: { authToken: string }) {
+  const [listingData, setListingData] = useState<Listing[]>([]);
+  const [loadingState, setLoadingState] = useState(true);
+  const [errorDuringFetch, setErrorDuringFetch] = useState("");
+  useEffect(() => {
+    async function fetchListings() {
+      try {
+        const response = await fetch("/api/listings", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        // If response is an error (ie., not okay throw error)
+        if (!response.ok) {
+          throw new Error(
+            `Error: HTTP ${response.status} ${response.statusText}`,
+          );
+        }
+
+        const result = await response.json();
+        setListingData(result);
+      } catch (error: any) {
+        console.error(error.message);
+        setErrorDuringFetch(error.message);
+      } finally {
+        setLoadingState(false);
+      }
+    }
+    fetchListings();
+  }, [authToken]);
   return (
     <>
-      <div className="flex flex-col ">
+      <div className="flex flex-col">
         <Hero
           heading="Student Friendly Options"
           subHeading="Find Your Next Off-Campus Destination"
         />
         <InformationLinks />
-        <TrendingListings />
+        {loadingState && (
+          <p className="text-center py-8 text-brand-600">Loading listings…</p>
+        )}
+        {errorDuringFetch && (
+          <p className="text-center py-8 text-red-500">{errorDuringFetch}</p>
+        )}
+        {!loadingState && !errorDuringFetch && (
+          <TrendingListings allListings={listingData} />
+        )}
       </div>
     </>
   );

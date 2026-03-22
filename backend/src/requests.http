@@ -6,6 +6,24 @@ GET http://localhost:3000/api/listings HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyX25ld0BleGFtcGxlLmNvbSIsImlhdCI6MTc3NDA3MzY5NiwiZXhwIjoxNzc0MTYwMDk2fQ.NCU55_2cAwwm_bv_WIzMRarMwMuvmMAR5eHU9rjk6SA
 
 
+### Get user info
+
+# [GET /api/users/:email] 200 OK — authenticated user fetching their own profile
+# Expect: 200 OK + user document (no password hash)
+
+GET http://localhost:3000/api/users/testuser_new@example.com HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyX25ld0BleGFtcGxlLmNvbSIsImlhdCI6MTc3NDA3MzY5NiwiZXhwIjoxNzc0MTYwMDk2fQ.NCU55_2cAwwm_bv_WIzMRarMwMuvmMAR5eHU9rjk6SA
+
+
+### Get user info — forbidden (token user != requested user)
+
+# [GET /api/users/:email] 403 Forbidden — token belongs to testuser_new but requesting derek.lam's profile
+# Expect: 403 Forbidden
+
+GET http://localhost:3000/api/users/derek.lam@email.com HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyX25ld0BleGFtcGxlLmNvbSIsImlhdCI6MTc3NDA3MzY5NiwiZXhwIjoxNzc0MTYwMDk2fQ.NCU55_2cAwwm_bv_WIzMRarMwMuvmMAR5eHU9rjk6SA
+
+
 ### Get all images of a user
 
 GET http://localhost:3000/api/users/listings HTTP/1.1
@@ -62,7 +80,14 @@ Content-Type: application/json
   "phone": "714-376-9559",
   "type": "agent"
 }
+### Testing
+POST http://localhost:3000/api/auth/tokens HTTP/1.1
+Content-Type: application/json
 
+{
+  "email": "testuser_new@example.com",
+  "password": "password123"
+}
 
 ### Create User
 
@@ -74,6 +99,21 @@ Content-Type: application/json
 
 {
   "email": "derek.lam@email.com",
+  "name": "testuser_new",
+  "password": "password123",
+  "phone": "714-376-9559",
+  "type": "agent"
+}
+### Create User
+
+# [Account Creation] 201 Created — new unique user
+# Expect: 201 Created + auth token in body
+
+POST http://localhost:3000/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "derek5.lam@email.com",
   "name": "testuser_new",
   "password": "password123",
   "phone": "714-376-9559",

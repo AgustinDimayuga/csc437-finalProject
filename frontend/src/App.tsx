@@ -1,4 +1,3 @@
-import { SHARED_TEST } from "./shared/example";
 import "./App.css";
 import { Home } from "./Home";
 import { Route, Routes } from "react-router";
@@ -7,80 +6,83 @@ import { SettingsPage } from "./SettingsPage";
 import { ScrollToTop } from "./ScrollUp";
 import { ContactUs } from "./ContactUs";
 import { HomeListings } from "./HomeListings";
-import { initialListings } from "./ListingsArrays";
 import { useState } from "react";
 import { ListingInformation } from "./ListingInformation";
 import { SignInPage } from "./SignInPage";
 import { ListAHome } from "./ListAHome";
 import { VALID_ROUTES } from "./shared/ValidRoutes";
+import { ProtectedRoute } from "./ProtectedRoute";
 function App() {
-  const [isSignedIn, setSignedIn] = useState(false);
-  const [listings, setListings] = useState(initialListings);
-  const [userName, setUsername] = useState("");
-  const [emailAdress, setEmailAdress] = useState("");
+  const [authToken, setAuthToken] = useState("");
+  const [emailAddress, setEmailAdress] = useState("");
   return (
     <>
       <ScrollToTop />
       <Routes>
         <Route
           path={VALID_ROUTES.HOME}
-          element={<MainLayout isSignedIn={isSignedIn} userName={userName} />}
+          element={
+            <MainLayout authToken={authToken} emailAddress={emailAddress} />
+          }
         >
-          <Route index element={<Home />} />
+          <Route
+            index
+            element={
+              <ProtectedRoute authToken={authToken}>
+                <Home authToken={authToken} />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path={VALID_ROUTES.SETTINGS}
             element={
-              isSignedIn ? (
-                <SettingsPage
-                  userName={userName}
-                  emailAddress={emailAdress}
-                  setEmailAddress={setEmailAdress}
-                  setUserName={setUsername}
-                />
-              ) : (
-                <SignInPage
-                  setEmailAddress={setEmailAdress}
-                  setUserName={setUsername}
-                  setIsSignedIn={setSignedIn}
-                />
-              )
+              <ProtectedRoute authToken={authToken}>
+                <SettingsPage authToken={authToken} emailAddress={emailAddress} />
+              </ProtectedRoute>
             }
           />
           <Route path={VALID_ROUTES.CONTACT} element={<ContactUs />} />
           <Route
             path={VALID_ROUTES.HOMELISTINGS}
-            element={<HomeListings listings={listings} />}
+            element={
+              <ProtectedRoute authToken={authToken}>
+                <HomeListings authToken={authToken} />
+              </ProtectedRoute>
+            }
           />
           <Route
             path={VALID_ROUTES.LISTING}
-            element={<ListingInformation listings={listings} />}
+            element={
+              <ProtectedRoute authToken={authToken}>
+                <ListingInformation authToken={authToken} />
+              </ProtectedRoute>
+            }
           />
           <Route
             path={VALID_ROUTES.SIGNIN}
             element={
               <SignInPage
                 setEmailAddress={setEmailAdress}
-                setUserName={setUsername}
-                setIsSignedIn={setSignedIn}
+                setAuthToken={setAuthToken}
+              />
+            }
+          />
+          <Route
+            path={VALID_ROUTES.REGISTER}
+            element={
+              <SignInPage
+                setEmailAddress={setEmailAdress}
+                setAuthToken={setAuthToken}
+                isRegistering
               />
             }
           />
           <Route
             path={VALID_ROUTES.ADDLISTING}
             element={
-              isSignedIn ? (
-                <ListAHome
-                  userName={userName}
-                  emailAddress={emailAdress}
-                  setListings={setListings}
-                />
-              ) : (
-                <SignInPage
-                  setEmailAddress={setEmailAdress}
-                  setUserName={setUsername}
-                  setIsSignedIn={setSignedIn}
-                />
-              )
+              <ProtectedRoute authToken={authToken}>
+                <ListAHome authToken={authToken} />
+              </ProtectedRoute>
             }
           />
         </Route>

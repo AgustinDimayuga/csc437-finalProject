@@ -27,7 +27,7 @@ export function ListingHero({
     <div className="w-full h-72 md:h-96 rounded-2xl overflow-hidden bg-brand-100 border border-brand-200 flex items-center justify-center relative">
       {images.length > 0 ? (
         <img
-          src={images[0]}
+          src={`/uploads/${images[0]}`}
           alt={`${address} listing`}
           className="w-full h-full object-cover"
         />

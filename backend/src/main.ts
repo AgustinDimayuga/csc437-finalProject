@@ -5,7 +5,6 @@ import { VALID_ROUTES } from "./shared/ValidRoutes.js";
 import { connectMongo } from "./connectMongo.js";
 import { registerListingRoutes } from "./routes/listingRoutes.js";
 import { ListingProvider } from "./ListingProvider.js";
-import { verify } from "node:crypto";
 import { verifyAuthToken } from "./routes/verifyAuthToken.js";
 import { registerAuthRoutes } from "./routes/authRoutes.js";
 import { CredentialProvider } from "./CredentialsProvider.js";
@@ -26,7 +25,7 @@ myMongoClient
   .listCollections()
   .toArray()
   .then((result) => console.log(result));
-app.get("/api/hello", (req, res) => {
+app.get("/api/hello", (_req, res) => {
   res.send("Hello, World " + SHARED_TEST);
 });
 
@@ -37,7 +36,7 @@ app.listen(PORT, () => {
 // Get the static directory of the built files
 const STATIC_DIR = getEnvVar("STATIC_DIR") || "public";
 // Get the index.html from the built files directory and server them on any of the ValidRoutes see VALID_ROUTES Folder
-app.get(Object.values(VALID_ROUTES), (req, res) => {
+app.get(Object.values(VALID_ROUTES), (_req, res) => {
   res.sendFile("index.html", { root: STATIC_DIR });
 });
 registerListingRoutes(app, new ListingProvider(myMongoClient));

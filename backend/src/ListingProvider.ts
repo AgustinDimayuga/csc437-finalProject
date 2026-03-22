@@ -8,7 +8,6 @@ export class ListingProvider {
   constructor(mongoClient: MongoClient) {
     this.mongoClient = mongoClient;
     const collectionName = getEnvVar("LISTINGS_COLLECTION_NAME") as string;
-    console.log(collectionName);
     this.collection = this.mongoClient.db().collection(collectionName);
   }
 
@@ -41,7 +40,6 @@ export class ListingProvider {
   }
 
   async getListingsByUser(email: string) {
-    console.log(email);
     const response = this.collection.find({ postedByEmail: email });
     if (!response) {
       return -1;
@@ -89,10 +87,8 @@ export class ListingProvider {
     const listing = await this.collection.findOne({ _id: objectId });
 
     if (!listing) {
-      // No such image exists
       return 0;
     }
-    console.log(email);
     // Check if user owns if so change it
     if (listing.postedByEmail === email) {
       const response = await this.collection.deleteOne({ _id: objectId });

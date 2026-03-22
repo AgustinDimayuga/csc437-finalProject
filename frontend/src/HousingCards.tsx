@@ -4,7 +4,7 @@ import { ListingType } from "./Listing.interface";
 type CardSize = "sm" | "md" | "lg";
 
 interface HousingCardProps {
-  id: number;
+  id: string;
   campus: string;
   address: string;
   city: string;
@@ -19,6 +19,7 @@ interface HousingCardProps {
   postedBy: "agent" | "student";
   cardImage?: string;
   size?: CardSize;
+  onDelete?: (id: string) => void;
 }
 
 const sizeConfig: Record<
@@ -61,6 +62,7 @@ export function HousingCard({
   postedBy,
   cardImage,
   size = "md",
+  onDelete,
 }: HousingCardProps) {
   const { imageHeight, titleSize, textSize, padding } = sizeConfig[size];
 
@@ -83,7 +85,7 @@ export function HousingCard({
       >
         {cardImage ? (
           <img
-            src=""
+            src={`/uploads/${cardImage}`}
             alt={`${address} listing`}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
@@ -101,11 +103,10 @@ export function HousingCard({
         </div>
         <div className="absolute top-3 right-3 flex">
           <span
-            className={`text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm ${
-              postedBy === "agent"
+            className={`text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm ${postedBy === "agent"
                 ? "bg-accent-500 text-white"
                 : "bg-red-600 text-white"
-            }`}
+              }`}
           >
             {postedBy === "agent" ? "Agent" : "Student"}
           </span>
@@ -164,6 +165,21 @@ export function HousingCard({
 
         {/* Campus tag */}
         <p className={`${textSize} text-accent-500 font-medium`}>{campus}</p>
+
+        {onDelete && (
+          <div className="flex justify-end pt-1">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onDelete(id);
+              }}
+              className="text-xs font-medium text-red-500 hover:text-red-700 border border-red-300 hover:border-red-500 rounded-lg px-3 py-1.5 transition-colors duration-150"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </Link>
   );

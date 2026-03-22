@@ -5,5 +5,6 @@ export const VALID_ROUTES = {
   HOMELISTINGS: "/HomeListings",
   LISTING: "/listing/:id",
   SIGNIN: "/signIN",
+  REGISTER: "/register",
   ADDLISTING: "/AddListing",
 };

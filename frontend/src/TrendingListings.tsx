@@ -1,9 +1,10 @@
 import { MoreInformation } from "./MoreInformation";
 import { HousingCard } from "./HousingCards";
 import { initialListings } from "./ListingsArrays";
+import { Listing } from "./Listing.interface";
 
-export function TrendingListings() {
-  const trending = initialListings.slice(0, 3);
+export function TrendingListings({ allListings }: { allListings: Listing[] }) {
+  const trending = allListings.slice(0, 3);
 
   return (
     <MoreInformation
@@ -12,8 +13,8 @@ export function TrendingListings() {
     >
       {trending.map((listing) => (
         <HousingCard
-          key={listing.id}
-          id={listing.id}
+          key={listing._id}
+          id={listing._id}
           campus={listing.campus}
           address={listing.address}
           city={listing.city}
@@ -25,7 +26,7 @@ export function TrendingListings() {
           bathrooms={listing.bathrooms}
           squareFootage={listing.squareFootage}
           rentPerMonth={listing.rentPerMonth}
-          postedBy={listing.postedBy}
+          postedBy={listing.contact.type}
           cardImage={listing.images[0]}
           size="lg"
         />

@@ -69,6 +69,13 @@ export class CredentialProvider {
     return true;
   }
 
+  async getUser(email: string): Promise<UserDocument | null> {
+    return this.usersCollection.findOne(
+      { email },
+      { projection: { _id: 1, name: 1, email: 1, phone: 1, type: 1 } },
+    );
+  }
+
   async verifyPassword(email: string, password: string): Promise<boolean> {
     const credDoc = await this.credsCollection.findOne({ email: email });
     if (!credDoc) {

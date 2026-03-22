@@ -1,140 +1,182 @@
-import { AccountSettings } from "./AccountSettings";
-import { WebSettings } from "./WebSettings";
-import { useActionState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { HousingCard } from "./HousingCards";
+import { Listing } from "./Listing.interface";
 
-type FormState = {
-  errors: {
-    username?: string;
-    email?: string;
-    password?: string;
-  };
-  values: {
-    username?: string;
-    email?: string;
-    password?: string;
-  };
-  success?: boolean;
-};
-export type Data = {
-  notifications: string;
-  theme: string;
-  language: string;
-  message: string | null;
-  changes: string[];
-};
-const initialState: Data = {
-  notifications: "Email",
-  theme: "Light",
-  language: "English",
-  message: null,
-  changes: [],
-};
-
-interface SignInpageProps {
-  userName: string;
-  emailAddress: string;
-  setUserName: React.Dispatch<React.SetStateAction<string>>;
-  setEmailAddress: React.Dispatch<React.SetStateAction<string>>;
+interface UserProfile {
+  name: string;
+  email: string;
+  phone: string;
+  type: "student" | "agent";
 }
-export function SettingsPage({
-  userName,
-  emailAddress,
-  setUserName,
-  setEmailAddress,
-}: SignInpageProps) {
-  const [data, formAction] = useActionState<FormState, FormData>(
-    (_prevState: FormState | undefined, formData: FormData) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      const username = (formData.get("username") as string) || "";
-      const email = (formData.get("email") as string) || "";
-      const password = (formData.get("password") as string) || "";
-      {
-        /* TODO edit this shit later*/
-      }
+interface SettingsPageProps {
+  authToken: string;
+  emailAddress: string;
+}
 
-      const data: FormState = { errors: {}, values: {} };
-      if (username.trim() === "") {
-        data.errors.username = "Username is required";
-      }
-
-      if (!emailRegex.test(email)) {
-        data.errors.email = "Please enter a valid email address";
-      }
-
-      if (password.trim().length < 5) {
-        data.errors.password = "Please enter at least 5 characters";
-      }
-
-      if (Object.keys(data.errors).length > 0) {
-        data.values.username = username;
-        data.values.email = email;
-        return data;
-      }
-      data.values.username = username;
-      data.values.email = email;
-
-      setEmailAddress(data.values.username);
-      setUserName(data.values.username);
-      data.success = true;
-      return data;
-    },
-    { errors: {}, values: { username: userName, email: emailAddress } },
-  );
-  const [dataPreferences, formActionPreferences, isPending] = useActionState<
-    Data,
-    FormData
-  >(submitPreferences, {
-    ...initialState,
-    theme: document.body.classList.contains("dark") ? "Dark" : "Light",
-  });
+export function SettingsPage({ authToken, emailAddress }: SettingsPageProps) {
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [loadingListings, setLoadingListings] = useState(true);
+  const [userError, setUserError] = useState("");
+  const [listingsError, setListingsError] = useState("");
 
   useEffect(() => {
-    document.body.classList.toggle("dark", dataPreferences.theme === "Dark");
-  }, [dataPreferences.theme]);
+    if (!emailAddress || !authToken) return;
+
+    async function fetchUser() {
+      try {
+        const res = await fetch(
+          `/api/users/${encodeURIComponent(emailAddress)}`,
+          { headers: { Authorization: `Bearer ${authToken}` } },
+        );
+        if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+        setUser(await res.json());
+      } catch (e: any) {
+        setUserError(e.message);
+      } finally {
+        setLoadingUser(false);
+      }
+    }
+
+    async function fetchListings() {
+      try {
+        const res = await fetch("/api/users/listings", {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+        setListings(await res.json());
+      } catch (e: any) {
+        setListingsError(e.message);
+      } finally {
+        setLoadingListings(false);
+      }
+    }
+
+    fetchUser();
+    fetchListings();
+  }, [emailAddress, authToken]);
+
+  async function handleDelete(listingId: string) {
+    try {
+      const res = await fetch(`/api/listings/${listingId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setListings((prev) => prev.filter((l) => l._id !== listingId));
+    } catch (e: any) {
+      console.error("Failed to delete listing:", e.message);
+    }
+  }
+
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "?";
 
   return (
     <div className="container-information">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex h-full flex-col gap-4">
-          <AccountSettings data={data} formAction={formAction} />
-        </div>
-        <div className="flex h-full flex-col gap-4">
-          <WebSettings
-            data={dataPreferences}
-            formActionPreferences={formActionPreferences}
-            isPending={isPending}
-          />
-        </div>
+      <div className="mx-auto max-w-content flex flex-col gap-10">
+        {/* ── Profile card ── */}
+        <section>
+          <h1 className="text-2xl font-bold text-brand-900 mb-4">
+            My Profile
+          </h1>
+
+          {loadingUser ? (
+            <p className="text-sm text-brand-600">Loading profile…</p>
+          ) : userError ? (
+            <p className="text-sm text-red-500">{userError}</p>
+          ) : user ? (
+            <div className="rounded-2xl border border-brand-200 bg-brand-100 p-6 flex flex-col gap-5">
+              {/* Avatar + name row */}
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-brand-900 flex items-center justify-center text-brand-50 text-xl font-bold shrink-0">
+                  {initials}
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="text-xl font-semibold text-brand-900">
+                    {user.name}
+                  </p>
+                  <span
+                    className={`self-start text-xs font-semibold px-2.5 py-1 rounded-full ${
+                      user.type === "agent"
+                        ? "bg-accent-500 text-white"
+                        : "bg-red-600 text-white"
+                    }`}
+                  >
+                    {user.type === "agent" ? "Agent" : "Student"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Details grid */}
+              <div className="border-t border-brand-200 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-1">
+                    Email
+                  </p>
+                  <p className="text-brand-900">{user.email}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-1">
+                    Phone
+                  </p>
+                  <p className="text-brand-900">{user.phone || "—"}</p>
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </section>
+
+        {/* ── My Listings ── */}
+        <section>
+          <h2 className="text-xl font-bold text-brand-900 mb-4">
+            My Listings
+          </h2>
+
+          {loadingListings ? (
+            <p className="text-sm text-brand-600">Loading listings…</p>
+          ) : listingsError ? (
+            <p className="text-sm text-red-500">{listingsError}</p>
+          ) : listings.length === 0 ? (
+            <div className="rounded-2xl border border-brand-200 bg-brand-100 p-8 text-center">
+              <p className="text-brand-600 text-sm">
+                You haven't posted any listings yet.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {listings.map((listing) => (
+                <HousingCard
+                  key={listing._id}
+                  id={listing._id}
+                  campus={listing.campus}
+                  address={listing.address}
+                  city={listing.city}
+                  state={listing.state}
+                  zipCode={listing.zipCode}
+                  distanceToCampus={listing.distanceToCampus}
+                  type={listing.type}
+                  bedrooms={listing.bedrooms}
+                  bathrooms={listing.bathrooms}
+                  squareFootage={listing.squareFootage}
+                  rentPerMonth={listing.rentPerMonth}
+                  postedBy={user?.type ?? "student"}
+                  cardImage={listing.images?.[0]}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
-}
-
-function submitPreferences(prevState: Data, formData: FormData): Data {
-  const notifications =
-    (formData.get("notifications") as string) ?? prevState.notifications;
-  const theme = (formData.get("theme") as string) ?? prevState.theme;
-  const language = (formData.get("language") as string) ?? prevState.language;
-
-  const changes: string[] = [];
-  if (notifications !== prevState.notifications) {
-    changes.push(
-      `Notifications: ${prevState.notifications} -> ${notifications}`,
-    );
-  }
-  if (theme !== prevState.theme) {
-    changes.push(`Theme: ${prevState.theme} -> ${theme}`);
-  }
-  if (language !== prevState.language) {
-    changes.push(`Language: ${prevState.language} -> ${language}`);
-  }
-
-  return {
-    notifications,
-    theme,
-    language,
-    message: "Preferences saved",
-    changes,
-  };
 }

@@ -1,5 +1,5 @@
 interface ListingContactCardProps {
-  id: number;
+  id: string;
   contactName: string;
   contactEmail: string;
   contactPhone?: string;

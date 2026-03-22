@@ -7,11 +7,11 @@ import { Link } from "react-router";
 import { NavLinks } from "./NavLinks";
 
 interface NavBarProps {
-  isSignedIn: boolean;
+  authToken: string;
   userName: string;
 }
 
-export function NavBar({ isSignedIn, userName }: NavBarProps) {
+export function NavBar({ authToken, userName }: NavBarProps) {
   const [isActive, setActive] = useState<Boolean>(false);
   const [isDark, setIsDark] = useState<boolean>(
     () => localStorage.getItem("theme") === "dark",
@@ -29,7 +29,6 @@ export function NavBar({ isSignedIn, userName }: NavBarProps) {
         wrapperRef.current &&
         !wrapperRef.current.contains(e.target as Node)
       ) {
-        console.log("hi");
         setActive(false);
       }
     }
@@ -46,7 +45,7 @@ export function NavBar({ isSignedIn, userName }: NavBarProps) {
 
           <div className="flex gap-2">
             <ul className="hidden md:flex gap-3 items-center ">
-              <NavLinks isSignedIn={isSignedIn} userName={userName} />
+              <NavLinks authToken={authToken} userName={userName} />
             </ul>
 
             <div className="relative md:hidden">
@@ -62,7 +61,7 @@ export function NavBar({ isSignedIn, userName }: NavBarProps) {
                   className="absolute right-0 mt-2 min-w-48 rounded-xl border border-brand-200 bg-brand-100 p-2 shadow-md"
                 >
                   <ul className="flex min-w-max flex-col gap-1 rounded-lg p-2 text-brand-700">
-                    <NavLinks isSignedIn={isSignedIn} userName={userName} />
+                    <NavLinks authToken={authToken} userName={userName} />
                   </ul>
                 </div>
               )}

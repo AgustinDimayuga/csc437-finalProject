@@ -1,6 +1,6 @@
 export type ListingType = "apartment" | "house" | "studio" | "room" | "condo";
 export interface Listing {
-  id: number;
+  _id: string;
   campus: string;
 
   // Location
@@ -40,12 +40,16 @@ export interface Listing {
 
   // Media & Contact
   images: string[]; // URLs
-  contactName: string;
-  contactEmail: string;
-  contactPhone?: string;
+  postedByEmail: string;
 
   // Meta
   listedAt: string; // ISO date string
   updatedAt: string;
-  postedBy: "agent" | "student";
+  contact: {
+    _id: string;
+    name: string;
+    email: string;
+    phone: string;
+    type: "student" | "agent";
+  };
 }

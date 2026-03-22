@@ -3,15 +3,15 @@ import { NavBar } from "./NavBar";
 import { Footer } from "./Footer";
 
 interface MainLayoutProps {
-  isSignedIn: boolean;
-  userName: string;
+  authToken: string;
+  emailAddress: string;
 }
 
-export function MainLayout({ isSignedIn, userName }: MainLayoutProps) {
+export function MainLayout({ authToken, emailAddress }: MainLayoutProps) {
   return (
     <>
       <div className="flex flex-col min-h-screen">
-        <NavBar isSignedIn={isSignedIn} userName={userName} />
+        <NavBar authToken={authToken} userName={emailAddress} />
         <main className="flex-1">
           <Outlet />
         </main>

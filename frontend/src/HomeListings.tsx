@@ -1,9 +1,9 @@
 import { HomeFilters } from "./HomeFilters";
 import { Listing } from "./Listing.interface";
 import { HousingCard } from "./HousingCards";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 interface HomeListingsProps {
-  listings: Listing[];
+  authToken: null | string;
 }
 export interface FilterData {
   campus: string;
@@ -22,8 +22,8 @@ const initialData: FilterData = {
   postedBy: "",
 };
 
-export function HomeListings({ listings }: HomeListingsProps) {
-  const [data, formSubmit] = useActionState(
+export function HomeListings({ authToken }: HomeListingsProps) {
+  const [data, formSubmit, isPending] = useActionState(
     (_prevData: FilterData, formData: FormData): FilterData => ({
       campus: formData.get("campus") as string,
       price: formData.get("price") as string,
@@ -34,8 +34,37 @@ export function HomeListings({ listings }: HomeListingsProps) {
     }),
     initialData,
   );
+  const [listingData, setListingData] = useState<Listing[]>([]);
+  const [loadingState, setLoadingState] = useState(true);
+  const [errorDuringFetch, setErrorDuringFetch] = useState("");
+  useEffect(() => {
+    async function fetchListings() {
+      try {
+        const response = await fetch("/api/listings", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        // If response is an error (ie., not okay throw error)
+        if (!response.ok) {
+          throw new Error(
+            `Error: HTTP ${response.status} ${response.statusText}`,
+          );
+        }
 
-  const homesToDisplay = listings.filter((listing) => {
+        const result = await response.json();
+        setListingData(result);
+      } catch (error: any) {
+        console.error(error.message);
+        setErrorDuringFetch(error.message);
+      } finally {
+        setLoadingState(false);
+      }
+    }
+    fetchListings();
+  }, [authToken]);
+
+  const homesToDisplay = listingData.filter((listing) => {
     if (data.campus && listing.campus !== data.campus) return false;
     if (data.beds && listing.bedrooms !== parseInt(data.beds)) return false;
     if (data.baths && listing.bathrooms < parseInt(data.baths)) return false;
@@ -57,7 +86,7 @@ export function HomeListings({ listings }: HomeListingsProps) {
           return false;
       }
     }
-    if (data.postedBy && listing.postedBy !== data.postedBy) return false;
+    if (data.postedBy && listing.contact.type !== data.postedBy) return false;
     return true;
   });
   return (
@@ -65,10 +94,12 @@ export function HomeListings({ listings }: HomeListingsProps) {
       <div className="container-information flex flex-col items-center gap-4">
         <HomeFilters submitForm={formSubmit} data={data} />
         <div className="grid w-full max-w-content grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {loadingState && <p>Loading...</p>}
+          {errorDuringFetch.length !== 0 && <span>{errorDuringFetch}</span>}
           {homesToDisplay.map((listing) => (
             <HousingCard
-              key={listing.id}
-              id={listing.id}
+              key={listing._id}
+              id={listing._id}
               campus={listing.campus}
               address={listing.address}
               city={listing.city}
@@ -80,7 +111,7 @@ export function HomeListings({ listings }: HomeListingsProps) {
               bathrooms={listing.bathrooms}
               squareFootage={listing.squareFootage}
               rentPerMonth={listing.rentPerMonth}
-              postedBy={listing.postedBy}
+              postedBy={listing.contact.type}
               cardImage={listing.images[0]}
               size="lg"
             />
