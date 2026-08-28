@@ -30,7 +30,7 @@ A full-stack housing listings platform for college students. Users can browse, p
 ## Project Structure
 
 ```
-csc437-finalProject/
+PolyHousing/
 ├── frontend/          # React app
 │   └── src/
 │       ├── App.tsx
