@@ -1,4 +1,4 @@
-# CampusNest
+# PolyHousing
 
 A full-stack housing listings platform for college students. Users can browse, post, and manage off-campus housing listings near their university campuses.
 
